@@ -11,6 +11,7 @@ export interface PlayLog {
   running_view: Record<string, Running>;
   buff_view: Stat;
   damage: number;
+  damages: [string, number][];
   clock: number;
   delay: number;
   action: Action;

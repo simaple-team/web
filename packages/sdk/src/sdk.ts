@@ -59,5 +59,23 @@ export function getSDK({
     }).then((res) => res.json());
   }
 
-  return { createWorkspace, use, elapse, useAndElapse };
+  async function rollback(id: string, index: number): Promise<void> {
+    return fetchFn(`${baseUrl}/workspaces/rollback/${id}/${index}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => res.json());
+  }
+
+  async function getLogs(id: string): Promise<PlayLog[]> {
+    return fetchFn(`${baseUrl}/workspaces/logs/${id}`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => res.json());
+  }
+
+  return { createWorkspace, use, elapse, useAndElapse, rollback, getLogs };
 }

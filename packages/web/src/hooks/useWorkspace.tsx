@@ -7,14 +7,15 @@ type WorkspaceProviderProps = { children: React.ReactNode };
 function useWorkspaceState() {
   const [workspaceId, setWorkspaceId] = React.useState<string>();
   const [history, setHistory] = React.useState<PlayLog[]>([]);
+  const [skillNames, setSkillNames] = React.useState<string[]>([]);
   const playLog = history[history.length - 1];
 
   function initialize() {
     sdk
       .createWorkspace({
         action_stat: {},
-        groups: ["archmagefb", "common", "adventurer.magician"],
-        injected_values: { character_level: 260 },
+        groups: ["mechanic", "common", "resistance", "pirate"],
+        injected_values: { character_level: 260, weapon_attack_power: 400 },
         skill_levels: {},
         v_improvements: {},
         character_stat: {
@@ -48,18 +49,54 @@ function useWorkspaceState() {
       })
       .then((res) => {
         setWorkspaceId(res.id);
-        return sdk.elapse(res.id, { time: 0 });
+        return sdk.getLogs(res.id);
       })
       .then((res) => {
-        pushPlayLog(res);
+        setSkillNames(Object.keys(res[0].validity_view));
+        setHistory(res);
       });
   }
 
-  function pushPlayLog(log: PlayLog) {
-    setHistory((history) => [...history, log]);
+  const rollback = React.useCallback(
+    (index: number) => {
+      if (!workspaceId) return;
+      sdk
+        .rollback(workspaceId, index)
+        .then(() => sdk.getLogs(workspaceId))
+        .then((res) => {
+          setHistory(res);
+        });
+    },
+    [sdk, workspaceId]
+  );
+
+  const undo = React.useCallback(() => {
+    rollback(history.length - 2);
+  }, [rollback, history.length]);
+
+  function pushPlayLog(...logs: PlayLog[]) {
+    setHistory((history) => [...history, ...logs]);
   }
 
-  return { workspaceId, history, playLog, initialize, pushPlayLog };
+  function reorderSkillNames(startIndex: number, endIndex: number) {
+    const result = Array.from(skillNames);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    setSkillNames(result);
+  }
+
+  return {
+    workspaceId,
+    history,
+    playLog,
+    skillNames,
+    initialize,
+    rollback,
+    undo,
+    pushPlayLog,
+    reorderSkillNames,
+  };
 }
 
 const WorkspaceStateContext = React.createContext<
