@@ -101,6 +101,28 @@ function getTotalData(history: PlayLog[]) {
     .sort((a, b) => b.value - a.value);
 }
 
+function getStackSeries(history: PlayLog[]) {
+  const names = Object.keys(history[0].running_view).filter(
+    (name) => history[0].running_view[name].stack != null
+  );
+
+  return names.map((name) => {
+    const stacks = history.map((log) => [
+      log.clock,
+      log.running_view[name].stack,
+    ]);
+    return {
+      name,
+      data: stacks,
+      xAxisIndex: 2,
+      yAxisIndex: 3,
+      type: "line",
+      smooth: false,
+      showSymbol: false,
+    };
+  });
+}
+
 function renderUptime(params: any, api: any) {
   const categoryIndex = api.value(0);
   const start = api.coord([api.value(1), categoryIndex]);
@@ -212,7 +234,7 @@ const Chart: React.FC<{
   };
 
   const options = {
-    grid: [{ bottom: "55%" }, { top: "55%" }],
+    grid: [{ bottom: "70%" }, { top: "35%", bottom: "35%" }, { top: "70%" }],
     axisPointer: {
       link: [
         {
@@ -240,13 +262,13 @@ const Chart: React.FC<{
       {
         show: true,
         realtime: true,
-        xAxisIndex: [0, 1],
+        xAxisIndex: [0, 1, 2],
         filterMode: "weakFilter",
       },
       {
         type: "inside",
         realtime: true,
-        xAxisIndex: [0, 1],
+        xAxisIndex: [0, 1, 2],
         filterMode: "weakFilter",
       },
     ],
@@ -263,6 +285,15 @@ const Chart: React.FC<{
       {
         type: "value",
         gridIndex: 1,
+        min: 0,
+        max: MAX_CLOCK,
+        axisLabel: {
+          formatter: clockFormatter,
+        },
+      },
+      {
+        type: "value",
+        gridIndex: 2,
         min: 0,
         max: MAX_CLOCK,
         axisLabel: {
@@ -290,17 +321,22 @@ const Chart: React.FC<{
         gridIndex: 1,
         data: Object.keys(history[0].running_view),
       },
+      {
+        type: "value",
+        gridIndex: 2,
+      },
     ],
     series: [
       {
+        name: "누적 데미지",
         data: getCumsumData(history),
         type: "line",
         smooth: true,
-        animationDuration: 100,
         showSymbol: false,
         markLine: markLine,
       },
       {
+        name: "구간 데미지",
         data: getBarData(history),
         type: "bar",
         barMinWidth: 2,
@@ -320,6 +356,7 @@ const Chart: React.FC<{
         yAxisIndex: 2,
         markLine: markLine,
       },
+      ...getStackSeries(history),
     ],
   };
 
@@ -338,7 +375,7 @@ const Chart: React.FC<{
       <ReactECharts
         ref={echartsRef}
         onEvents={onEvents}
-        style={{ height: 720 }}
+        style={{ height: 900 }}
         option={options}
       />
       <ShareChart history={history} />
