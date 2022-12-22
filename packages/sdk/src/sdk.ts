@@ -3,8 +3,8 @@ import {
   RequestElapse,
   RequestUse,
   RequestUseAndElapse,
-  WorkspaceConfiguration,
-  WorkspaceResponse,
+  MinimalSimulatorConfiguration,
+  SimulatorResponse,
 } from "./models";
 
 export function getSDK({
@@ -14,9 +14,18 @@ export function getSDK({
   baseUrl: string;
   fetchFn: (url: string, init?: RequestInit) => Promise<Response>;
 }) {
-  async function createWorkspace(
-    configuration: WorkspaceConfiguration
-  ): Promise<WorkspaceResponse> {
+  async function getAllSimulators(): Promise<SimulatorResponse[]> {
+    return fetchFn(`${baseUrl}/workspaces`, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    }).then((res) => res.json());
+  }
+
+  async function createSimulator(
+    configuration: MinimalSimulatorConfiguration
+  ): Promise<SimulatorResponse> {
     return fetchFn(`${baseUrl}/workspaces`, {
       method: "POST",
       body: JSON.stringify(configuration),
@@ -77,5 +86,13 @@ export function getSDK({
     }).then((res) => res.json());
   }
 
-  return { createWorkspace, use, elapse, useAndElapse, rollback, getLogs };
+  return {
+    getAllSimulators,
+    createSimulator,
+    use,
+    elapse,
+    useAndElapse,
+    rollback,
+    getLogs,
+  };
 }

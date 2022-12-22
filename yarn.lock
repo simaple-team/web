@@ -1750,6 +1750,7 @@ __metadata:
     framer-motion: ^7.6.19
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-hook-form: ^7.41.0
     typescript: 4.9.3
     vite: ^4.0.0
   languageName: unknown
@@ -3935,6 +3936,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: f8db4d64aa5c983d15e80d0fd86d1d649e33744e7b6b70babb08c95f7828e38c2cce7068c0007cf3263eec8b738ebd317d24a613df7f75b472bad6529cf8d6b6
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.41.0":
+  version: 7.41.0
+  resolution: "react-hook-form@npm:7.41.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 72107a7f2f1d9981c323b93046e6495a910d7a0db93004a207a455d3166ca5b76d245b02a67e96a4d436b7a821c16c0a645e01afd876d6f35b0db750ed2e7ae6
   languageName: node
   linkType: hard
 

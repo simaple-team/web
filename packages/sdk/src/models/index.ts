@@ -1,10 +1,10 @@
 export type { Action } from "./Action";
 export type { ActionStat } from "./ActionStat";
 export type { Event } from "./Event";
+export type { MinimalSimulatorConfiguration } from "./MinimalSimulatorConfiguration";
 export type { PlayLog } from "./PlayLog";
 export type { RequestElapse, RequestUse, RequestUseAndElapse } from "./Request";
 export type { Running } from "./Running";
+export type { SimulatorResponse } from "./SimulatorResponse";
 export type { Stat } from "./Stat";
 export type { Validity } from "./Validity";
-export type { WorkspaceConfiguration } from "./WorkspaceConfiguration";
-export type { WorkspaceResponse } from "./WorkspaceResponse";

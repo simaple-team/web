@@ -22,7 +22,7 @@ import { SkillStatus } from "./SkillStatus";
 
 const SkillPanel: React.FC = () => {
   const {
-    workspaceId,
+    currentSimulatorId: workspaceId,
     playLog,
     skillNames,
     undo,
