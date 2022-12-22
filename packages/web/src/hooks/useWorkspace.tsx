@@ -2,6 +2,7 @@ import {
   MinimalSimulatorConfiguration,
   PlayLog,
   SimulatorResponse,
+  SnapshotResponse,
 } from "@simaple/sdk";
 import * as React from "react";
 import { sdk } from "../sdk";
@@ -11,13 +12,23 @@ type WorkspaceProviderProps = { children: React.ReactNode };
 function useWorkspaceState() {
   const [currentSimulatorId, setCurrentSimulatorId] = React.useState<string>();
   const [simulators, setSimulators] = React.useState<SimulatorResponse[]>([]);
+  const [snapshots, setSnapshots] = React.useState<SnapshotResponse[]>([]);
   const [history, setHistory] = React.useState<PlayLog[]>([]);
   const [skillNames, setSkillNames] = React.useState<string[]>([]);
   const playLog = history[history.length - 1];
 
   React.useLayoutEffect(() => {
     getAllSimulators();
+    getAllSnapshots();
   }, []);
+
+  async function updateSimulatorId(id: string) {
+    setCurrentSimulatorId(id);
+
+    const logs = await sdk.getLogs(id);
+    setSkillNames(Object.keys(logs[0].validity_view));
+    setHistory(logs);
+  }
 
   async function getAllSimulators() {
     await sdk.getAllSimulators().then((res) => setSimulators(res));
@@ -26,22 +37,36 @@ function useWorkspaceState() {
 
   async function createSimulator(configuration: MinimalSimulatorConfiguration) {
     const simulator = await sdk.createSimulator(configuration);
-    setCurrentSimulatorId(simulator.id);
 
-    const logs = await sdk.getLogs(simulator.id);
-    setSkillNames(Object.keys(logs[0].validity_view));
-    setHistory(logs);
-
+    await updateSimulatorId(simulator.id);
     await getAllSimulators();
   }
 
   async function loadSimulator(id: string) {
-    setCurrentSimulatorId(id);
+    await updateSimulatorId(id);
+    await getAllSimulators();
+  }
 
-    const logs = await sdk.getLogs(id);
-    setSkillNames(Object.keys(logs[0].validity_view));
-    setHistory(logs);
+  async function getAllSnapshots() {
+    await sdk.getAllSnapshots().then((res) => setSnapshots(res));
+    return;
+  }
 
+  async function createSnapshot(name: string) {
+    if (!currentSimulatorId) return;
+
+    await sdk.createSnapshot({
+      name,
+      simulator_id: currentSimulatorId,
+    });
+
+    await getAllSnapshots();
+  }
+
+  async function loadFromSnapshot(id: string) {
+    const simulatorId = await sdk.loadFromSnapshot(id);
+
+    await updateSimulatorId(simulatorId);
     await getAllSimulators();
   }
 
@@ -77,11 +102,14 @@ function useWorkspaceState() {
   return {
     simulators,
     currentSimulatorId,
+    snapshots,
     history,
     playLog,
     skillNames,
     createSimulator,
     loadSimulator,
+    createSnapshot,
+    loadFromSnapshot,
     rollback,
     undo,
     pushPlayLog,

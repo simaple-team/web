@@ -1,14 +1,11 @@
 import {
   Button,
   FormLabel,
-  HStack,
-  Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -121,10 +118,6 @@ const CreateSimulatorModal: React.FC<{
         },
       },
     });
-
-  function handleClose() {
-    onClose();
-  }
 
   async function handleSubmit() {
     createSimulator(getValues());

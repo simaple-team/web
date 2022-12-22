@@ -9,17 +9,29 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import * as React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useWorkspace } from "../hooks/useWorkspace";
 import CreateSimulatorModal from "./CreateSimulatorModal";
+import CreateSnapshotModal from "./CreateSnapshotModal";
 
 const Header: React.FC = () => {
-  const { simulators, currentSimulatorId, loadSimulator } = useWorkspace();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { snapshots, currentSimulatorId, loadFromSnapshot } = useWorkspace();
+  const simulatorDisclosure = useDisclosure();
+  const snapshotDisclosure = useDisclosure();
   const [idToLoad, setIdToLoad] = React.useState<string>();
+
+  useHotkeys(
+    ["shift+s"],
+    () => {
+      if (!currentSimulatorId) return;
+      snapshotDisclosure.onOpen();
+    },
+    { preventDefault: true }
+  );
 
   function handleLoad() {
     if (!idToLoad) return;
-    loadSimulator(idToLoad);
+    loadFromSnapshot(idToLoad);
   }
 
   return (
@@ -28,22 +40,39 @@ const Header: React.FC = () => {
         <Box fontFamily={"heading"} fontWeight={"bold"}>
           Simaple Editor
         </Box>
-        <Button onClick={onOpen}>New</Button>
-        <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
+        <Button onClick={simulatorDisclosure.onOpen}>New</Button>
+        <Modal
+          scrollBehavior="inside"
+          isOpen={simulatorDisclosure.isOpen}
+          onClose={simulatorDisclosure.onClose}
+        >
           <ModalOverlay />
-          <CreateSimulatorModal onClose={onClose} />
+          <CreateSimulatorModal onClose={simulatorDisclosure.onClose} />
         </Modal>
+
         <Box>{currentSimulatorId}</Box>
         <Spacer />
+
         <HStack>
+          <Button onClick={snapshotDisclosure.onOpen}>Save</Button>
+          <Modal
+            scrollBehavior="inside"
+            isOpen={snapshotDisclosure.isOpen}
+            onClose={snapshotDisclosure.onClose}
+          >
+            <ModalOverlay />
+            <CreateSnapshotModal onClose={snapshotDisclosure.onClose} />
+          </Modal>
+
           <Select
+            w={200}
             value={idToLoad}
             onChange={(e) => setIdToLoad(e.currentTarget.value)}
           >
             <option value={undefined}>-</option>
-            {simulators.map(({ id }) => (
+            {snapshots.map(({ id, name }) => (
               <option key={id} value={id}>
-                {id}
+                {name}
               </option>
             ))}
           </Select>

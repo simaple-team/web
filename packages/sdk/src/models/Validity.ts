@@ -3,4 +3,5 @@ export interface Validity {
   time_left: number;
   cooldown: number;
   valid: boolean;
+  stack: number | null;
 }
