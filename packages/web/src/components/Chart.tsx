@@ -6,6 +6,7 @@ import {
   default as ReactECharts,
 } from "echarts-for-react";
 import * as React from "react";
+import { ChartSetting } from "../hooks/preferences.interface";
 
 const MAX_CLOCK = 180 * 1000;
 
@@ -64,7 +65,9 @@ function getUptimeData(history: PlayLog[]) {
     return history
       .filter(
         (log) =>
-          log.action.name === name && log.running_view[name].time_left > 0
+          log.events.find(
+            (event) => event.name === name && event.method === "use"
+          ) && log.running_view[name].time_left > 0
       )
       .map((log) => ({
         name,
@@ -101,26 +104,30 @@ function getTotalData(history: PlayLog[]) {
     .sort((a, b) => b.value - a.value);
 }
 
-function getStackSeries(history: PlayLog[]) {
-  const names = Object.keys(history[0].running_view).filter(
-    (name) => history[0].running_view[name].stack != null
-  );
+function getStackSeries(
+  history: PlayLog[],
+  { stackAxis1, stackAxis2 }: ChartSetting
+) {
+  const getSeries = (names: string[], yAxisIndex: number) =>
+    names.map((name) => {
+      const stacks = history
+        .filter((log, index) => log.clock !== history[index + 1]?.clock)
+        .map((log) => [log.clock, log.running_view[name].stack]);
+      return {
+        name,
+        data: stacks,
+        xAxisIndex: 2,
+        yAxisIndex,
+        type: "line",
+        smooth: false,
+        showSymbol: false,
+      };
+    });
 
-  return names.map((name) => {
-    const stacks = history.map((log) => [
-      log.clock,
-      log.running_view[name].stack,
-    ]);
-    return {
-      name,
-      data: stacks,
-      xAxisIndex: 2,
-      yAxisIndex: 3,
-      type: "line",
-      smooth: false,
-      showSymbol: false,
-    };
-  });
+  return [
+    ...getSeries(stackAxis1.skillNames, 3),
+    ...getSeries(stackAxis2.skillNames, 4),
+  ];
 }
 
 function renderUptime(params: any, api: any) {
@@ -204,7 +211,8 @@ const ShareChart: React.FC<{ history: PlayLog[] }> = ({ history }) => {
 const Chart: React.FC<{
   history: PlayLog[];
   rollback: (index: number) => void;
-}> = ({ history, rollback }) => {
+  setting: ChartSetting;
+}> = ({ history, rollback, setting }) => {
   const clock = history[history.length - 1].clock;
   const echartsRef = React.useRef<EChartsReact>(null);
 
@@ -254,7 +262,6 @@ const Chart: React.FC<{
         dataZoom: {
           yAxisIndex: "none",
         },
-        restore: {},
         saveAsImage: {},
       },
     },
@@ -324,6 +331,14 @@ const Chart: React.FC<{
       {
         type: "value",
         gridIndex: 2,
+        min: 0,
+        max: setting.stackAxis1.max,
+      },
+      {
+        type: "value",
+        gridIndex: 2,
+        min: 0,
+        max: setting.stackAxis2.max,
       },
     ],
     series: [
@@ -356,7 +371,7 @@ const Chart: React.FC<{
         yAxisIndex: 2,
         markLine: markLine,
       },
-      ...getStackSeries(history),
+      ...getStackSeries(history, setting),
     ],
   };
 

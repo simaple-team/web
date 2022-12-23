@@ -5,7 +5,7 @@ import SkillPanel from "../components/SkillPanel";
 import { useWorkspace } from "../hooks/useWorkspace";
 
 const Editor: React.FC = () => {
-  const { history, rollback, playLog } = useWorkspace();
+  const { history, rollback, playLog, preferences } = useWorkspace();
 
   if (!playLog) {
     return <></>;
@@ -17,7 +17,11 @@ const Editor: React.FC = () => {
         <SkillPanel />
       </Flex>
       <Box flexGrow={1}>
-        <Chart history={history} rollback={rollback} />
+        <Chart
+          history={history}
+          rollback={rollback}
+          setting={preferences.chart}
+        />
       </Box>
     </Flex>
   );

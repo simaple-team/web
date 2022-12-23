@@ -11,6 +11,7 @@ import {
 import * as React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useWorkspace } from "../hooks/useWorkspace";
+import ChartSettingModal from "./ChartSettingModal";
 import CreateSimulatorModal from "./CreateSimulatorModal";
 import CreateSnapshotModal from "./CreateSnapshotModal";
 
@@ -18,6 +19,7 @@ const Header: React.FC = () => {
   const { snapshots, currentSimulatorId, loadFromSnapshot } = useWorkspace();
   const simulatorDisclosure = useDisclosure();
   const snapshotDisclosure = useDisclosure();
+  const preferencesDisclosure = useDisclosure();
   const [idToLoad, setIdToLoad] = React.useState<string>();
 
   useHotkeys(
@@ -40,6 +42,7 @@ const Header: React.FC = () => {
         <Box fontFamily={"heading"} fontWeight={"bold"}>
           Simaple Editor
         </Box>
+
         <Button onClick={simulatorDisclosure.onOpen}>New</Button>
         <Modal
           scrollBehavior="inside"
@@ -48,6 +51,16 @@ const Header: React.FC = () => {
         >
           <ModalOverlay />
           <CreateSimulatorModal onClose={simulatorDisclosure.onClose} />
+        </Modal>
+
+        <Button onClick={preferencesDisclosure.onOpen}>Settings</Button>
+        <Modal
+          scrollBehavior="inside"
+          isOpen={preferencesDisclosure.isOpen}
+          onClose={preferencesDisclosure.onClose}
+        >
+          <ModalOverlay />
+          <ChartSettingModal onClose={preferencesDisclosure.onClose} />
         </Modal>
 
         <Box>{currentSimulatorId}</Box>

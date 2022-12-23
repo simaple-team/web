@@ -6,11 +6,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   SimpleGrid,
   Stack,
@@ -18,35 +13,9 @@ import {
 import { MinimalSimulatorConfiguration } from "@simaple/sdk";
 import * as React from "react";
 import { Fragment } from "react";
-import { Controller, Noop, RefCallBack, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useWorkspace } from "../hooks/useWorkspace";
-
-const RfcNumberInput: React.FC<{
-  field: {
-    onChange: (...event: any[]) => void;
-    onBlur: Noop;
-    value: number | undefined;
-    name: string;
-    ref: RefCallBack;
-  };
-}> = ({ field: { name, onBlur, onChange, ref, value } }) => {
-  return (
-    <NumberInput
-      size="sm"
-      name={name}
-      onBlur={onBlur}
-      onChange={(_, value) => onChange(value)}
-      ref={ref}
-      value={value}
-    >
-      <NumberInputField />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
-    </NumberInput>
-  );
-};
+import RfcNumberInput from "./RfcNumberInput";
 
 const STAT_KEYS = [
   ["character_stat.STR", "STR"],
@@ -135,6 +104,7 @@ const CreateSimulatorModal: React.FC<{
             <option value="archmagetc">archmagetc</option>
             <option value="bishop">bishop</option>
             <option value="mechanic">mechanic</option>
+            <option value="adele">adele</option>
           </Select>
           <SimpleGrid columns={2} spacingX={10}>
             <FormLabel>Level</FormLabel>
