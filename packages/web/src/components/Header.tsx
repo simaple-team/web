@@ -53,6 +53,9 @@ const Header: React.FC = () => {
           <CreateSimulatorModal onClose={simulatorDisclosure.onClose} />
         </Modal>
 
+        <Box>{currentSimulatorId}</Box>
+        <Spacer />
+
         <Button onClick={preferencesDisclosure.onOpen}>Settings</Button>
         <Modal
           scrollBehavior="inside"
@@ -62,9 +65,6 @@ const Header: React.FC = () => {
           <ModalOverlay />
           <ChartSettingModal onClose={preferencesDisclosure.onClose} />
         </Modal>
-
-        <Box>{currentSimulatorId}</Box>
-        <Spacer />
 
         <HStack>
           <Button onClick={snapshotDisclosure.onOpen}>Save</Button>

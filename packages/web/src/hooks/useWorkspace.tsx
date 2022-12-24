@@ -18,6 +18,7 @@ function useWorkspaceState() {
   const [skillNames, setSkillNames] = React.useState<string[]>([]);
   const [preferences, setPreferences] = React.useState<Preferences>({
     chart: {
+      maxClock: 180 * 1000,
       stackAxis1: {
         max: 10,
         skillNames: [],

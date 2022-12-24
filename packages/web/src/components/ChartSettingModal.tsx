@@ -44,54 +44,56 @@ const ChartSettingModal: React.FC<{
       <ModalCloseButton />
       <ModalBody>
         <Stack>
-          <Heading size="sm">Stack Group 1</Heading>
-          <FormLabel>Max</FormLabel>
-          <Controller
-            name="stackAxis1.max"
-            control={control}
-            render={({ field }) => <RfcNumberInput field={field} />}
-          />
-          <FormLabel>Skills</FormLabel>
-          <Controller
-            name="stackAxis1.skillNames"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <CheckboxGroup value={value} onChange={onChange}>
-                <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                  {skillNames.map((skillName) => (
-                    <Checkbox key={skillName} value={skillName}>
-                      {skillName}
-                    </Checkbox>
-                  ))}
-                </Stack>
-              </CheckboxGroup>
-            )}
-          />
-        </Stack>
-        <Stack>
-          <Heading size="sm">Stack Group 2</Heading>
-          <FormLabel>Max</FormLabel>
-          <Controller
-            name="stackAxis2.max"
-            control={control}
-            render={({ field }) => <RfcNumberInput field={field} />}
-          />
-          <FormLabel>Skills</FormLabel>
-          <Controller
-            name="stackAxis2.skillNames"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <CheckboxGroup value={value} onChange={onChange}>
-                <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                  {skillNames.map((skillName) => (
-                    <Checkbox key={skillName} value={skillName}>
-                      {skillName}
-                    </Checkbox>
-                  ))}
-                </Stack>
-              </CheckboxGroup>
-            )}
-          />
+          <Stack>
+            <Heading size="sm">Stack Group 1</Heading>
+            <FormLabel>Max</FormLabel>
+            <Controller
+              name="stackAxis1.max"
+              control={control}
+              render={({ field }) => <RfcNumberInput field={field} />}
+            />
+            <FormLabel>Skills</FormLabel>
+            <Controller
+              name="stackAxis1.skillNames"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <CheckboxGroup value={value} onChange={onChange}>
+                  <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                    {skillNames.map((skillName) => (
+                      <Checkbox key={skillName} value={skillName}>
+                        {skillName}
+                      </Checkbox>
+                    ))}
+                  </Stack>
+                </CheckboxGroup>
+              )}
+            />
+          </Stack>
+          <Stack>
+            <Heading size="sm">Stack Group 2</Heading>
+            <FormLabel>Max</FormLabel>
+            <Controller
+              name="stackAxis2.max"
+              control={control}
+              render={({ field }) => <RfcNumberInput field={field} />}
+            />
+            <FormLabel>Skills</FormLabel>
+            <Controller
+              name="stackAxis2.skillNames"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <CheckboxGroup value={value} onChange={onChange}>
+                  <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                    {skillNames.map((skillName) => (
+                      <Checkbox key={skillName} value={skillName}>
+                        {skillName}
+                      </Checkbox>
+                    ))}
+                  </Stack>
+                </CheckboxGroup>
+              )}
+            />
+          </Stack>
         </Stack>
       </ModalBody>
 

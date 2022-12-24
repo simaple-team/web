@@ -56,7 +56,7 @@ const CreateSimulatorModal: React.FC<{
         action_stat: {},
         job: "archmagefb",
         character_level: 260,
-        weapon_attack_power: 400,
+        weapon_attack_power: 295,
         character_stat: {
           STR: 907.0,
           LUK: 2224.0,

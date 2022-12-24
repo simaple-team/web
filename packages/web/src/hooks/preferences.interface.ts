@@ -1,4 +1,5 @@
 export interface ChartSetting {
+  maxClock: number;
   stackAxis1: {
     max: number;
     skillNames: string[];

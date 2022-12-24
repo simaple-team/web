@@ -34,7 +34,8 @@ export const SkillStatus: React.FC<{
             {name}
           </Heading>
           <HStack>
-            {validity && <Text>쿨타임: {validity?.time_left}</Text>}
+            {validity?.stack != null && <Text>*{validity?.stack}</Text>}
+            {validity && <Text>쿨타임: {validity.time_left}</Text>}
             <Button
               isDisabled={!validity?.valid}
               key={name}
