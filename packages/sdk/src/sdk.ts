@@ -1,11 +1,11 @@
 import {
+  CreateSnapshotCommand,
+  MinimalSimulatorConfiguration,
   PlayLog,
   RequestElapse,
   RequestUse,
   RequestUseAndElapse,
-  MinimalSimulatorConfiguration,
   SimulatorResponse,
-  CreateSnapshotCommand,
 } from "./models";
 import { SnapshotResponse } from "./models/SnapshotResponse";
 
@@ -92,6 +92,10 @@ export function getSDK({
     return _request(`/workspaces/logs/${id}`);
   }
 
+  async function getComponentSpecs(): Promise<Record<string, unknown>> {
+    return _request(`/component_spec`);
+  }
+
   return {
     getAllSimulators,
     createSimulator,
@@ -103,5 +107,6 @@ export function getSDK({
     useAndElapse,
     rollback,
     getLogs,
+    getComponentSpecs,
   };
 }
