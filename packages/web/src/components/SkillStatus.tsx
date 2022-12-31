@@ -50,7 +50,9 @@ export const SkillStatus: React.FC<{
             zIndex={-1}
             position="absolute"
             left={0}
-            right={`${100 - (running.time_left / running.duration) * 100}%`}
+            right={`${
+              100 - (running.time_left / running.lasting_duration) * 100
+            }%`}
             top={0}
             bottom={0}
             background="blue.100"
@@ -61,7 +63,9 @@ export const SkillStatus: React.FC<{
             zIndex={-2}
             position="absolute"
             left={0}
-            right={`${100 - (validity.time_left / validity.cooldown) * 100}%`}
+            right={`${
+              100 - (validity.time_left / validity.cooldown_duration) * 100
+            }%`}
             top={0}
             bottom={0}
             background="gray.100"

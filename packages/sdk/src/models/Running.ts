@@ -1,6 +1,6 @@
 export interface Running {
   name: string;
   time_left: number;
-  duration: number;
+  lasting_duration: number;
   stack: number | null;
 }

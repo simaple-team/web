@@ -105,6 +105,7 @@ const CreateSimulatorModal: React.FC<{
             <option value="bishop">bishop</option>
             <option value="mechanic">mechanic</option>
             <option value="adele">adele</option>
+            <option value="dualblade">dualblade</option>
           </Select>
           <SimpleGrid columns={2} spacingX={10}>
             <FormLabel>Level</FormLabel>
