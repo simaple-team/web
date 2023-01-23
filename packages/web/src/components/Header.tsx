@@ -46,6 +46,7 @@ const Header: React.FC = () => {
         <Button onClick={simulatorDisclosure.onOpen}>New</Button>
         <Modal
           scrollBehavior="inside"
+          closeOnOverlayClick={false}
           isOpen={simulatorDisclosure.isOpen}
           onClose={simulatorDisclosure.onClose}
         >
