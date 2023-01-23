@@ -12,7 +12,7 @@ import * as React from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useWorkspace } from "../hooks/useWorkspace";
 import ChartSettingModal from "./ChartSettingModal";
-import CreateSimulatorModal from "./CreateSimulatorModal";
+import CreateSimulatorModal from "./CreateBaselineSimulatorModal";
 import CreateSnapshotModal from "./CreateSnapshotModal";
 
 const Header: React.FC = () => {

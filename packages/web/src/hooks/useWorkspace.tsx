@@ -1,4 +1,5 @@
 import {
+  BaselineConfiguration,
   MinimalSimulatorConfiguration,
   PlayLog,
   SimulatorResponse,
@@ -49,8 +50,17 @@ function useWorkspaceState() {
     return;
   }
 
-  async function createSimulator(configuration: MinimalSimulatorConfiguration) {
-    const simulator = await sdk.createSimulator(configuration);
+  async function createMinimalSimulator(
+    configuration: MinimalSimulatorConfiguration
+  ) {
+    const simulator = await sdk.createMinimalSimulator(configuration);
+
+    await updateSimulatorId(simulator.id);
+    await getAllSimulators();
+  }
+
+  async function createBaselineSimulator(configuration: BaselineConfiguration) {
+    const simulator = await sdk.createBaselineSimulator(configuration);
 
     await updateSimulatorId(simulator.id);
     await getAllSimulators();
@@ -128,7 +138,8 @@ function useWorkspaceState() {
     playLog,
     skillNames,
     preferences,
-    createSimulator,
+    createMinimalSimulator,
+    createBaselineSimulator,
     loadSimulator,
     createSnapshot,
     loadFromSnapshot,

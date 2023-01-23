@@ -46,10 +46,10 @@ const STAT_KEYS = [
   ["character_stat.MMP_multiplier", "MaxMP%"],
 ] as const;
 
-const CreateSimulatorModal: React.FC<{
+const CreateMininalSimulatorModal: React.FC<{
   onClose: () => void;
 }> = ({ onClose }) => {
-  const { createSimulator } = useWorkspace();
+  const { createMinimalSimulator } = useWorkspace();
   const { register, control, getValues } =
     useForm<MinimalSimulatorConfiguration>({
       defaultValues: {
@@ -89,7 +89,7 @@ const CreateSimulatorModal: React.FC<{
     });
 
   async function handleSubmit() {
-    createSimulator(getValues());
+    createMinimalSimulator(getValues());
     onClose();
   }
 
@@ -143,4 +143,4 @@ const CreateSimulatorModal: React.FC<{
   );
 };
 
-export default CreateSimulatorModal;
+export default CreateMininalSimulatorModal;

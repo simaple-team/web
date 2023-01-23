@@ -1,12 +1,16 @@
 export type { Action } from "./Action";
 export type { ActionStat } from "./ActionStat";
+export type { BaselineConfiguration } from "./BaselineConfiguration";
 export type { CreateSnapshotCommand } from "./CreateSnapshotCommand";
 export type { Event } from "./Event";
+export type { JobCategory } from "./JobCategory";
+export type { JobType } from "./JobType";
 export type { MinimalSimulatorConfiguration } from "./MinimalSimulatorConfiguration";
 export type { PlayLog } from "./PlayLog";
 export type { RequestElapse, RequestUse, RequestUseAndElapse } from "./Request";
 export type { Running } from "./Running";
 export type { SimulatorResponse } from "./SimulatorResponse";
+export type { SimulationSetting } from './SiumulationSetting';
 export type { SnapshotResponse } from "./SnapshotResponse";
 export type { Stat } from "./Stat";
 export type { Validity } from "./Validity";

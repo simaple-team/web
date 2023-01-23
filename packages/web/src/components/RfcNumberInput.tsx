@@ -4,6 +4,7 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  UseNumberInputProps,
 } from "@chakra-ui/react";
 import { Noop, RefCallBack } from "react-hook-form";
 
@@ -15,7 +16,8 @@ const RfcNumberInput: React.FC<{
     name: string;
     ref: RefCallBack;
   };
-}> = ({ field: { name, onBlur, onChange, ref, value } }) => {
+  props?: UseNumberInputProps
+}> = ({ field: { name, onBlur, onChange, ref, value }, props = {} }) => {
   return (
     <NumberInput
       size="sm"
@@ -24,6 +26,7 @@ const RfcNumberInput: React.FC<{
       onChange={(_, value) => onChange(value)}
       ref={ref}
       value={value}
+      {...props}
     >
       <NumberInputField />
       <NumberInputStepper>

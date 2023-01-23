@@ -1,12 +1,10 @@
 import {
-  PlayLog,
+  CreateSnapshotCommand, MinimalSimulatorConfiguration, PlayLog,
   RequestElapse,
   RequestUse,
-  RequestUseAndElapse,
-  MinimalSimulatorConfiguration,
-  SimulatorResponse,
-  CreateSnapshotCommand,
+  RequestUseAndElapse, SimulatorResponse
 } from "./models";
+import { BaselineConfiguration } from "./models/BaselineConfiguration";
 import { SnapshotResponse } from "./models/SnapshotResponse";
 
 export function getSDK({
@@ -30,10 +28,19 @@ export function getSDK({
     return _request(`/workspaces`);
   }
 
-  async function createSimulator(
+  async function createMinimalSimulator(
     configuration: MinimalSimulatorConfiguration
   ): Promise<SimulatorResponse> {
     return _request(`/workspaces`, {
+      method: "POST",
+      body: JSON.stringify(configuration),
+    });
+  }
+
+  async function createBaselineSimulator(
+    configuration: BaselineConfiguration
+  ): Promise<SimulatorResponse> {
+    return _request(`/workspaces/baseline`, {
       method: "POST",
       body: JSON.stringify(configuration),
     });
@@ -94,7 +101,8 @@ export function getSDK({
 
   return {
     getAllSimulators,
-    createSimulator,
+    createMinimalSimulator,
+    createBaselineSimulator,
     getAllSnapshots,
     createSnapshot,
     loadFromSnapshot,
