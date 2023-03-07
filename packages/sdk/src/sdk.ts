@@ -1,8 +1,11 @@
 import {
-  CreateSnapshotCommand, MinimalSimulatorConfiguration, PlayLog,
+  CreateSnapshotCommand,
+  MinimalSimulatorConfiguration,
+  PlayLog,
   RequestElapse,
   RequestUse,
-  RequestUseAndElapse, SimulatorResponse
+  RequestUseAndElapse,
+  SimulatorResponse,
 } from "./models";
 import { BaselineConfiguration } from "./models/BaselineConfiguration";
 import { SnapshotResponse } from "./models/SnapshotResponse";
@@ -95,6 +98,10 @@ export function getSDK({
     });
   }
 
+  async function getLatestLog(id: string): Promise<PlayLog> {
+    return _request(`/workspaces/logs/${id}/latest`);
+  }
+
   async function getLogs(id: string): Promise<PlayLog[]> {
     return _request(`/workspaces/logs/${id}`);
   }
@@ -110,6 +117,7 @@ export function getSDK({
     elapse,
     useAndElapse,
     rollback,
+    getLatestLog,
     getLogs,
   };
 }

@@ -17,4 +17,7 @@ export interface PlayLog {
   clock: number;
   delay: number;
   action: Action;
+  checkpoint: Record<string, string>;
+  previous_hash: string;
+  hash: string;
 }

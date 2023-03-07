@@ -99,16 +99,21 @@ function useWorkspaceState() {
       if (!currentSimulatorId) return;
       sdk
         .rollback(currentSimulatorId, index)
-        .then(() => sdk.getLogs(currentSimulatorId))
-        .then((res) => {
-          setHistory(res);
+        .then(() => sdk.getLatestLog(currentSimulatorId))
+        .then((latestLog) => {
+          if (latestLog.hash === history.at(index)?.hash) {
+            return setHistory((history) => history.slice(0, index));
+          }
+          return sdk
+            .getLogs(currentSimulatorId)
+            .then((logs) => setHistory(logs));
         });
     },
     [sdk, currentSimulatorId]
   );
 
   const undo = React.useCallback(() => {
-    rollback(history.length - 2);
+    rollback(history.length - 1);
   }, [rollback, history.length]);
 
   function pushPlayLog(...logs: PlayLog[]) {
