@@ -2,6 +2,8 @@ import { Flex, Input, Select, Stack, Text, Textarea } from "@chakra-ui/react";
 import * as React from "react";
 import YAML from "yaml";
 import { sdk } from "../sdk";
+import Form from "@rjsf/chakra-ui";
+import validator from "@rjsf/validator-ajv8";
 
 interface SpecProperty {
   title: string;
@@ -61,42 +63,6 @@ function filterData(data: Record<string, any>) {
   );
 }
 
-function handleNumberLike(value: string) {
-  const numberValue = Number(value);
-  if (isNaN(numberValue) || value === "") {
-    return value;
-  }
-  return numberValue;
-}
-
-const PropertyControl: React.FC<{
-  spec: ComponentSpec;
-  name: string;
-  value: string;
-  onChange: (value: string | number) => void;
-}> = ({ spec, name, value, onChange }) => {
-  const resolvedProperty = (prop: SpecProperty | PropertyRef) => {
-    if ("$ref" in prop) {
-      return spec.definitions[prop.$ref.split("definitions/")[1]];
-    }
-    return prop;
-  };
-  const specProp = resolvedProperty(spec.properties[name]);
-
-  return (
-    <Stack>
-      <Text fontSize="sm">
-        {specProp.title} ({specProp.type})
-      </Text>
-      <Input
-        size="sm"
-        value={value ?? ""}
-        onChange={(e) => onChange(handleNumberLike(e.currentTarget.value))}
-      />
-    </Stack>
-  );
-};
-
 const Editor: React.FC = () => {
   const { names, selectedName, selectedComponentSpec, setSelectedName } =
     useComponentSpecs();
@@ -143,21 +109,12 @@ const Editor: React.FC = () => {
             value={group}
             onChange={(e) => setGroup(e.currentTarget.value)}
           />
-          {selectedComponentSpec &&
-            Object.keys(selectedComponentSpec.properties).map((key) => (
-              <PropertyControl
-                key={key}
-                spec={selectedComponentSpec}
-                name={key}
-                value={data[key]}
-                onChange={(value) =>
-                  setData((form) => ({ ...form, [key]: value }))
-                }
-              />
-            ))}
+          {selectedComponentSpec && (
+            <Form schema={selectedComponentSpec} validator={validator} />
+          )}
         </Stack>
       </Flex>
-      <Flex flexBasis={600} flexDirection="column">
+      <Flex flex="1 0 600px" flexDirection="column">
         <Textarea
           value={YAML.stringify(
             {
