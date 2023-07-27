@@ -8,6 +8,7 @@ import {
   SimulatorResponse,
 } from "./models";
 import { BaselineConfiguration } from "./models/BaselineConfiguration";
+import { Skill } from "./models/Skill";
 import { SnapshotResponse } from "./models/SnapshotResponse";
 
 export function getSDK({
@@ -106,6 +107,10 @@ export function getSDK({
     return _request(`/workspaces/logs/${id}`);
   }
 
+  async function getSkills(): Promise<Skill[]> {
+    return _request(`/skills`);
+  }
+
   return {
     getAllSimulators,
     createMinimalSimulator,
@@ -119,5 +124,6 @@ export function getSDK({
     rollback,
     getLatestLog,
     getLogs,
+    getSkills,
   };
 }

@@ -14,15 +14,17 @@ import {
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ChartSetting } from "../hooks/preferences.interface";
+import { usePreference } from "../hooks/usePreference";
 import { useWorkspace } from "../hooks/useWorkspace";
 import RfcNumberInput from "./RfcNumberInput";
 
 const ChartSettingModal: React.FC<{
   onClose: () => void;
 }> = ({ onClose }) => {
-  const { preferences, history, setChartSetting } = useWorkspace();
+  const { chartSetting, setChartSetting } = usePreference();
+  const { history } = useWorkspace();
   const { control, getValues } = useForm<ChartSetting>({
-    defaultValues: preferences.chart,
+    defaultValues: chartSetting,
   });
 
   const skillNames = React.useMemo(

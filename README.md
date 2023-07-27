@@ -22,7 +22,12 @@ poetry run poe web
 ```
 
 ### Run web
+
 ```
 yarn
 yarn dev
 ```
+
+### Icon Assets
+
+[Path](./packages/web/public/icons)

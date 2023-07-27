@@ -16,20 +16,25 @@ import CreateSimulatorModal from "./CreateBaselineSimulatorModal";
 import CreateSnapshotModal from "./CreateSnapshotModal";
 
 const Header: React.FC = () => {
-  const { snapshots, currentSimulatorId, loadFromSnapshot } = useWorkspace();
+  const { snapshots, currentSimulatorId, loadFromSnapshot, undo } =
+    useWorkspace();
   const simulatorDisclosure = useDisclosure();
   const snapshotDisclosure = useDisclosure();
   const preferencesDisclosure = useDisclosure();
   const [idToLoad, setIdToLoad] = React.useState<string>();
 
   useHotkeys(
-    ["shift+s"],
+    "ctrl+s",
     () => {
       if (!currentSimulatorId) return;
       snapshotDisclosure.onOpen();
     },
     { preventDefault: true }
   );
+
+  useHotkeys("ctrl+z", () => {
+    undo();
+  });
 
   function handleLoad() {
     if (!idToLoad) return;

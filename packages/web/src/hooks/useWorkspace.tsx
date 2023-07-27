@@ -17,22 +17,10 @@ function useWorkspaceState() {
   const [snapshots, setSnapshots] = React.useState<SnapshotResponse[]>([]);
   const [history, setHistory] = React.useState<PlayLog[]>([]);
   const [skillNames, setSkillNames] = React.useState<string[]>([]);
-  const [preferences, setPreferences] = React.useState<Preferences>({
-    chart: {
-      maxClock: 180 * 1000,
-      stackAxis1: {
-        max: 10,
-        skillNames: [],
-      },
-      stackAxis2: {
-        max: 10,
-        skillNames: [],
-      },
-    },
-  });
   const playLog = history[history.length - 1];
 
   React.useLayoutEffect(() => {
+    sdk.getSkills().then(console.log);
     getAllSimulators();
     getAllSnapshots();
   }, []);
@@ -123,13 +111,6 @@ function useWorkspaceState() {
     setSkillNames(result);
   }
 
-  function setChartSetting(chart: ChartSetting) {
-    setPreferences({
-      ...preferences,
-      chart,
-    });
-  }
-
   return {
     simulators,
     currentSimulatorId,
@@ -137,7 +118,6 @@ function useWorkspaceState() {
     history,
     playLog,
     skillNames,
-    preferences,
     createMinimalSimulator,
     createBaselineSimulator,
     loadSimulator,
@@ -147,7 +127,6 @@ function useWorkspaceState() {
     undo,
     pushPlayLog,
     reorderSkillNames,
-    setChartSetting,
   };
 }
 
