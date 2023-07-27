@@ -9,12 +9,8 @@ import {
   NumberInputField,
   NumberInputStepper,
   Stack,
+  Wrap,
 } from "@chakra-ui/react";
-import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import * as React from "react";
 import { useWorkspace } from "../hooks/useWorkspace";
 import { sdk } from "../sdk";
@@ -27,7 +23,6 @@ const SkillPanel: React.FC = () => {
     skillNames,
     undo,
     pushPlayLog,
-    reorderSkillNames,
   } = useWorkspace();
   const [elapseAmount, setElapseAmount] = React.useState(0);
   const [autoElapse, setAutoElapse] = React.useState(true);
@@ -55,17 +50,6 @@ const SkillPanel: React.FC = () => {
       pushPlayLog(usePlayLog);
       setElapseAmount(delay);
     }
-  }
-
-  function handleDragEnd(result: DragEndEvent) {
-    if (!result.over) {
-      return;
-    }
-
-    reorderSkillNames(
-      result.active.data.current!.sortable.index,
-      result.over.data.current!.sortable.index
-    );
   }
 
   function handleUndo() {
@@ -99,23 +83,16 @@ const SkillPanel: React.FC = () => {
         </NumberInput>
         <Button onClick={() => handleElapse(elapseAmount)}>Elapse</Button>
       </Flex>
-      <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
-        <Stack>
-          <SortableContext
-            items={skillNames}
-            strategy={verticalListSortingStrategy}
-          >
-            {skillNames.map((name) => (
-              <SkillStatus
-                key={name}
-                playLog={playLog}
-                name={name}
-                onUse={handleUse}
-              />
-            ))}
-          </SortableContext>
-        </Stack>
-      </DndContext>
+      <Wrap>
+        {skillNames.map((name) => (
+          <SkillStatus
+            key={name}
+            playLog={playLog}
+            name={name}
+            onUse={handleUse}
+          />
+        ))}
+      </Wrap>
 
       {/* {Object.entries(playLog.buff_view).map(([key, value]) => (
           <div key={key}>
