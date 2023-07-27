@@ -100,13 +100,8 @@ function useWorkspaceState() {
       sdk
         .rollback(currentSimulatorId, index)
         .then(() => sdk.getLatestLog(currentSimulatorId))
-        .then((latestLog) => {
-          if (latestLog.hash === history.at(index)?.hash) {
-            return setHistory((history) => history.slice(0, index));
-          }
-          return sdk
-            .getLogs(currentSimulatorId)
-            .then((logs) => setHistory(logs));
+        .then(() => {
+          setHistory((history) => history.slice(0, index));
         });
     },
     [sdk, currentSimulatorId]
