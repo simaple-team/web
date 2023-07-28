@@ -18,6 +18,7 @@ export const ValidityCell: React.FC<{
       width="48px"
       height="48px"
       position="relative"
+      title={validity.name}
       onClick={() => onClick()}
     >
       <img

@@ -16,7 +16,13 @@ export const RunningCell: React.FC<{
       : undefined;
 
   return (
-    <Center as="button" width="48px" height="48px" position="relative">
+    <Center
+      as="button"
+      width="48px"
+      height="48px"
+      position="relative"
+      title={running.name}
+    >
       <img
         width="100%"
         height="100%"
