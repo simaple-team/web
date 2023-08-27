@@ -24,7 +24,7 @@ export const ValidityCell: React.FC<{
       <img
         width="100%"
         height="100%"
-        src={`icons/${validity.id.split("-")[0]}.gif`}
+        src={`icons/${validity.id.split("-")[0]}.png`}
       />
       <div style={{ position: "absolute" }}>
         {validity && (
