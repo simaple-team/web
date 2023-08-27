@@ -26,7 +26,7 @@ export const RunningCell: React.FC<{
       <img
         width="100%"
         height="100%"
-        src={`icons/${running.id.split("-")[0]}.gif`}
+        src={`icons/${running.id.split("-")[0]}.png`}
       />
       <div style={{ position: "absolute" }}>
         {running && (
