@@ -1,5 +1,7 @@
 # simaple-web
 
+Simaple Web UI는 https://github.com/simaple-team/simaple에 통합되어 관리됩니다. 이 저장소는 더 이상 사용되지 않습니다.
+
 ## Development
 
 ```
